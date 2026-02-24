@@ -16,6 +16,13 @@ body {
     color: var(--text-color);
     line-height: 1.6;
 }
+/*--- No Specific Section ---*/
+ul, ol {
+    padding-left: 1.25rem;
+}
+li {
+    margin-top: 0.25rem;
+}
 
 /*--- Nav Bar ---*/
 .navbar {
@@ -46,6 +53,9 @@ body {
     text-decoration: none;
     color: var(--text-color);
 }
+.nav-links a:hover {
+    color: var(--accent-color);
+}
 
 /*--- Main Content ---*/
 .container {
@@ -59,7 +69,7 @@ body {
 }
 .hero-text {
     font-size: 1.1rem;
-    color: car(--muted-text);
+    color: var(--muted-text);
 }
 .section {
     margin-top: 3rem;
@@ -80,13 +90,23 @@ body {
 .algo-card h5 {
     margin: 0 0 0.25rem 0;
 }
+.algo-card:hover {
+    border-color: var(--accent-color);
+    transform: translateY(-2px);
+    transition: 0.15s ease;
+}
+.algo-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}
 .section-positive {
     background-color: #eef2ff;
     border-radius: 8px;
     padding: 1.5rem;
 }
-/*--- Footer ---*/
 
+/*--- Footer ---*/
 .footer {
     margin-top: 4rem;
     padding: 2rem 1rem;
