@@ -17,7 +17,7 @@ body {
     line-height: 1.6;
 }
 
-/*Nav Bar*/
+/*--- Nav Bar ---*/
 .navbar {
     background-color: white;
     border-bottom: 1px solid var(--border-color);
@@ -47,7 +47,7 @@ body {
     color: var(--text-color);
 }
 
-/*Main content*/
+/*--- Main Content ---*/
 .container {
     max-width: 900px;
     margin: 0 auto;
@@ -84,4 +84,14 @@ body {
     background-color: #eef2ff;
     border-radius: 8px;
     padding: 1.5rem;
+}
+/*--- Footer ---*/
+
+.footer {
+    margin-top: 4rem;
+    padding: 2rem 1rem;
+    border-top: 1px solid var(--border-color);
+    text-align: center;
+    color: var(--muted-text);
+    font-size: 0.9rem;
 }
