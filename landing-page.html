@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" /> 
+        <title>Recursion Visualizer</title>
+
+        <link rel="stylesheet" href="landing-style.css">
+    </head>
+    <body>
+        <!--Navigation-->
+        <header class="navbar">
+            <div class="nav-container">
+                <h1 class="logo">Recursion Visualizer</h1>
+                <nav>
+                    <ul class="nav-links">
+                        <li><a href="landing-page.html">Home</a></li>
+                        <li><a href="#">Algorithms</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </header>
+
+        <main class="container">
+            <!--Hero/Overview-->
+            <section class="hero">
+                <h2>Visualizing Recursion</h2>
+                <p class="hero-text">
+                    Look at stack frames, what they contain, and what they return to help trace
+                    recursive function calls.
+                </p>
+                <p class="overview-text">
+                    Recursion can be one of the more difficult concepts to wrap your head around.
+                    This tool helps show what is happening when a recursive
+                    function is running and makes it easier to keep track of what's actually going on.
+                </p>
+            </section>
+
+            <!--Tool Description-->
+            <section class="section">
+                <h3>What this tool does</h3>
+                <ul>
+                    <li>Step through a recursive function/algorithm one call at a time</li>
+                    <li>See how stack frames are created, what they contain, and how they are removed</li>
+                    <li>Track return values as the stack "unwinds"</li>
+                    <li>Understand how recursion can scale and be useful in complex algorithms</li>
+                </ul>
+            </section>
+
+            <!--How to-->
+            <section class="section">
+                <h3>How to Use It</h3>
+                <ol>
+                    <li>Choose an Algorithm</li>
+                    <li>Enter an input value</li>
+                    <li>Step through the recursive calls and returns</li>
+                </ol>
+                <p>
+                    You get to control when the program moves on to the next step so you 
+                    can see everything that is going on each time a call is made.
+                </p>
+            </section>
+
+            <!--Algos-->
+            <section class="section">
+                <h3>Algorithms</h3>
+
+                <div class="algo-group">
+                    <!--Group Name: Intro Algos-->
+                    <h4>Start Here</h4>
+
+                    <!--Factorial-->
+                    <div class="algo-card">
+                        <a href="#", class="algo-link">
+                            <h5>Factorial</h5>
+                            <p>Simple way of seeing base cases, recursive calls, and moving up a stack.
+                            </p>
+                        </a>
+                    </div>
+
+                    <!--Sum of N Numbers-->
+                    <div class="algo-card">
+                        <a href="#", class="algo-link">
+                            <h5>Sum of N Numbers</h5>
+                            <p>Soft introduction to recursion with a clear base case (stopping point).
+                            </p>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="algo-group">
+                    <!--Group name: Branching Algos-->
+                    <h4>Branching Recursion</h4>
+
+                    <!--Fibonacci Sequence-->
+                    <div class="algo-card">
+                        <a href="#", class="algo-link">
+                            <h5>Fibonacci Sequence</h5>
+                            <p>Shows how recursive calls can branch and what work is repeated.
+                            </p>
+                        </a>
+                    </div>
+
+                    <!--Binary Search-->
+                    <div class="algo-card">
+                        <a href="#", class="algo-link">
+                            <h5>Binary Search</h5>
+                            <p>Shows an example of narrowing a problem instead of branching outwards.
+                            </p>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="algo-group">
+                    <!--Group Name: Advanced-->
+                    <h4>Advanced</h4>
+
+                    <!--Permutations-->
+                    <div class="algo-card">
+                        <a href="#", class="algo-link">
+                            <h5>Permutations</h5>
+                            <p>Shows backtracking in recursion and visualizes how things are done and then
+                            undone
+                            </p>
+                        </a>
+                    </div>
+                    
+                    <!--Quick Sort-->
+                    <div class="algo-card">
+                        <a href="#", class="algo-link">
+                            <h5>Quick Sort</h5>
+                            <p>See how recursion can be used to "divide and conquer" by splitting 
+                                arrays(lists) into smaller sub-arrays
+                        </p>
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+            <!--Reinforcement/Positive Word-->
+            <section class="section-positive">
+                <h3>Having Trouble? Keep at it!</h3>
+                <p>
+                    Recursion is difficult because you can't see what is actually happening each call 
+                    until the stack finally unwinds. Compared to iterative/conditional loops print logging 
+                    for each call is also much harder to grasp.
+                    <br> 
+                    <i>I can only hope that this tool is valuable enough to you so that it is less of
+                         a struggle to understand what is going on in each call of a recursive function.</i>
+                </p>
+                <h5>Keep trying, it will get easier with more practice.</h5>
+            </section>
+        </main>
+
+        <!--Footer-->
+        <footer class="footer">
+            <p>
+                Built to help Computer Science/Programming students with concepts on recursion. AI 
+                tools were implemented while creating this tool.
+            </p>
+        </footer>
+            
+    </body>
+</html>
