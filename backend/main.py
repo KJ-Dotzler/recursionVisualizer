@@ -14,7 +14,7 @@ FRONTEND_DIR = BASE_DIR / "frontend"
 @app.include_router(factorial_router, prefix='/api')
 
 # ---Static Files---
-app.mount("/static",StaticFiles(directory=FRONTEND_DIR), name="static")
+@app.mount("/static",StaticFiles(directory=FRONTEND_DIR), name="static")
 
 # ---Serve Static---
 @app.get("/", response_class=HTMLResponse)
