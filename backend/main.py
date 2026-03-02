@@ -10,11 +10,15 @@ app = FastAPI(title='Recursion Visualizer API')
 BASE_DIR = Path(__file__).resolve().parent.parent
 FRONTEND_DIR = BASE_DIR / "frontend"
 
-# --- Factorial ---
-@app.include_router(factorial_router, prefix='/api')
+# --- check before mount ---
+if (not FRONTEND_DIR.exists()):
+    raise RuntimeError(f"Front End directory not found: {FRONTEND_DIR}")
 
 # ---Static Files---
-@app.mount("/static",StaticFiles(directory=FRONTEND_DIR), name="static")
+app.mount("/static",StaticFiles(directory=str(FRONTEND_DIR)), name="static")
+
+# --- Factorial ---
+app.include_router(factorial_router, prefix='/api')
 
 # ---Serve Static---
 @app.get("/", response_class=HTMLResponse)

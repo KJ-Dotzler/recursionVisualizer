@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" /> 
+        <title>Factorial Visualizer</title>
+        <link rel="stylesheet" href="factorial-style.css" />
+    </head>
+    <body>
+        <header class="navbar">
+            <div class="nav-container">
+                <h1 class="logo"></h1>
+                <nav>
+                    <ul class="nav-links">
+                        <li><a href="/">Home</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </header>
+        <main class="container">
+            <section class="hero">
+                <h2>Factorial Recursion</h2>
+                <p class="hero text">
+                    Enter a number (0-10) to view the recursive call stack
+                    that evaluates the factorial. 
+                </p>
+            </section>
+            <section class="section">
+                <label for="number">Enter n:</label>
+                <input type="number" id="number" min="0" max="10" />
+                <button id="runBtn">Run</button>
+            </section>
+            <section class="section">
+                <h3>Execution steps</h3>
+                <div id="output"></div>
+            </section>
+        </main>
+        <script>
+            const runBtn = document.getElementById("runBtn");
+            const outputDiv = document.getElementById("output");
+            runBtn.addEventListener("click", async () => {
+                const n = parseInt(document.getElementById("number").value);
+
+                if (isNaN(n)) {
+                    outputDiv.innerHTML = "<p>Please enter a number</p>";
+                    return;
+                }
+                outputDiv.innerHTML = "<p>Running.....</p>";
+                try {
+                    const response = await fetch("/api/factorial", {
+                        method: "POST",
+                        headers: {
+                            "content-type":"application/json"
+                        },
+                        body: JSON.stringify({n:n})
+                    });
+                    const data = await response.json();
+                    outputDiv.innerHTML = "";
+                    for (const step of data.steps){
+                        const p = document.createElement("p");
+                        const depth = step.depth ?? 0;
+                        p.style.marginLeft = `${depth * 20}px`;
+                        p.style.color = step.action === "call" ? "blue" : "green";
+                        p.textContent = `${step.action.toUpperCase()}: ${step.value}`;
+                        outputDiv.appendChild(p);
+                        await new Promise(r => setTimeout(r, 400));
+                    }
+                    /*data.steps.forEach(step => {
+                        const p = document.createElement("p");
+                        const depth = step.depth ?? 0;
+                        p.style.marginLeft = `${depth * 20}px`;
+                        p.style.color = step.action === "call" ? "blue" : "green";
+                        p.textContent = `${step.action.toUpperCase()}: ${step.value}`;
+                        outputDiv.appendChild(p);
+                    });*/
+                } catch (error) {
+                    outputDiv.innerHTML = "<p>Error calling API</p>";
+                    console.error(error);
+                }
+            });
+        </script>
+    </body>
+    <footer></footer>
+</html>
