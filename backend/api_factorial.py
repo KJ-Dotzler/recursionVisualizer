@@ -24,3 +24,9 @@ def factorialSteps(n : int, steps : List[Step]) -> int:
         result = n * factorialSteps(n-1, steps)
         steps.append(Step(action='return',value=str(result)))
         return result
+
+@router.post('/factorial', response_model=FactorialOutput)
+def factorial_endpoint(data:FactorialInput):
+    steps = List[Step] = []
+    factorialSteps(data.n, steps)
+    return FactorialOutput(steps=steps)

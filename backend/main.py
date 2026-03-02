@@ -2,12 +2,16 @@ from fastapi import FastAPI
 from fastapi.responses import HTMLResponse
 from fastapi.staticfiles import StaticFiles
 from pathlib import Path
+from api_factorial import router as factorial_router
 
 app = FastAPI(title='Recursion Visualizer API')
 
 # ---Paths---
 BASE_DIR = Path(__file__).resolve().parent.parent
 FRONTEND_DIR = BASE_DIR / "frontend"
+
+# --- Factorial ---
+@app.include_router(factorial_router, prefix='/api')
 
 # ---Static Files---
 app.mount("/static",StaticFiles(directory=FRONTEND_DIR), name="static")
@@ -17,4 +21,6 @@ app.mount("/static",StaticFiles(directory=FRONTEND_DIR), name="static")
 def serveLandingPage():
     htmlPage = FRONTEND_DIR / "landing-page.html"
     return htmlPage.read_text()
+
+
     
