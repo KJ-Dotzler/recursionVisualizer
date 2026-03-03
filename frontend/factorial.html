@@ -56,23 +56,54 @@
                     });
                     const data = await response.json();
                     outputDiv.innerHTML = "";
+                    const stack = [];
                     for (const step of data.steps){
+                        const container = document.createElement("div");
+                        container.style.marginLeft = `${step.depth * 20}px`;
+                        const header = document.createElement("p");
+                        const details = document.createElement("div");
                         const p = document.createElement("p");
-                        const depth = step.depth ?? 0;
-                        p.style.marginLeft = `${depth * 20}px`;
-                        p.style.color = step.action === "call" ? "blue" : "green";
-                        p.textContent = `${step.action.toUpperCase()}: ${step.value}`;
-                        outputDiv.appendChild(p);
-                        await new Promise(r => setTimeout(r, 400));
+                        p.textContent = "";
+                        p.style.display = "none";
+                        if (step.action === "call"){
+                            header.textContent = `${step.action.toUpperCase()}: ${step.value}`;
+                            container.appendChild(header);  
+                            header.style.cursor = "pointer";
+                        
+                            details.style.display = "none";
+                            
+                            if (step.n <= 1){
+                                details.textContent = `factorial(${step.n}) = 1`;
+
+                            } else {
+                                details.textContent = `factorial(${step.n})= ${step.n} * Result of factorial(${step.n - 1})
+                                `;
+                                
+                            }
+                        header.addEventListener("click", () => {
+                            details.style.cursor = "pointer";
+                            details.style.display = 
+                                details.style.display === "none" ? "block" : "none";
+                            }
+                        )
+                        details.addEventListener("click", () => {
+                                    p.style.display = 
+                                        p.style.display === "none" ? "block" : "none"; 
+                                    }
+                            )
+                        details.appendChild(p)
+                        container.appendChild(details);
+                        stack.push({
+                            returnElem: p
+                        })
+                        }
+                        if (step.action === "return"){
+                            const frame = stack.pop();
+                            frame.returnElem.textContent = `Returns ${step.returnVal}`;
+
+                        }   
+                    outputDiv.appendChild(container);
                     }
-                    /*data.steps.forEach(step => {
-                        const p = document.createElement("p");
-                        const depth = step.depth ?? 0;
-                        p.style.marginLeft = `${depth * 20}px`;
-                        p.style.color = step.action === "call" ? "blue" : "green";
-                        p.textContent = `${step.action.toUpperCase()}: ${step.value}`;
-                        outputDiv.appendChild(p);
-                    });*/
                 } catch (error) {
                     outputDiv.innerHTML = "<p>Error calling API</p>";
                     console.error(error);
