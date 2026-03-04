@@ -7,50 +7,76 @@ router = APIRouter()
 class FactorialInput(BaseModel):
     n : int = Field(gt=0)
 
-class Step(BaseModel):
-    action: str
-    value: str
-    depth: int
+class execStep(BaseModel):
+    line: int
+    event: str
+    description: str
     n: int
     returnVal: int | None = None
 
 class FactorialOutput(BaseModel):
-    steps : List[Step]
+    steps : List[execStep]
 
-def factorialSteps(n : int, steps : List[Step], depth: int = 0) -> int:
+def factorialSteps(n : int, steps : List[execStep]) -> int:
     steps.append(
-        Step(
-            action='call', 
-            value=f'Factorial({n})', 
-            depth=depth,
+        execStep(
+            line=1, 
+            event='call', 
+            description=f'Entering Factorial({n})',
             n=n,
-            returnVal=None
             )
         )
+    steps.append(
+        execStep(
+            line=2, 
+            event='check_base', 
+            description=f'Checking if n <= 1',
+            n=n,
+            )
+        )
+    
     if n <= 1:
         steps.append(
-            Step(
-                action='return',
-                value=f'1', 
-                depth=depth,
+            execStep(
+                line=3,
+                event='return', 
+                description='Base case reached, returning 1',
                 n=n,
                 returnVal=1
                 )
             )
         return 1
-    else:
-        result = n * factorialSteps(n-1, steps, depth + 1)
-        steps.append(
-            Step(
-                action='return',
-                value=f'{result}', 
-                depth=depth,
-                n=n,
-                returnVal=result))
-        return result
+    steps.append(
+        execStep(
+            line=4, 
+            event='evaluate recursive', 
+            description=f'Evaluating Factorial({n-1})',
+            n=n,
+            )
+        )
+    
+    childVal = n * factorialSteps(n-1, steps)
+    steps.append(
+        execStep(
+            line=4,
+            event='substitute', 
+            description=f'Substituting returned value {childVal} into {n} * {childVal}',
+            n=n,
+            returnVal=result))
+    result = n * childVal
+    steps.append(
+        execStep(
+            line=4, 
+            event='return', 
+            description=f'Returning {result}',
+            n=n,
+            returnVal=result
+            )
+        )
+    return result
 
 @router.post('/factorial', response_model=FactorialOutput)
 def factorial_endpoint(data:FactorialInput):
-    steps: List[Step] = []
+    steps: List[execStep] = []
     factorialSteps(data.n, steps)
     return FactorialOutput(steps=steps)

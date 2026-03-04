@@ -29,15 +29,99 @@
                 <label for="number">Enter n:</label>
                 <input type="number" id="number" min="0" max="10" />
                 <button id="runBtn">Run</button>
+                <button id="stepBtn" disabled>Step</button>
             </section>
             <section class="section">
                 <h3>Execution steps</h3>
+                <!--output div for run button-->
                 <div id="output"></div>
+
+                <!--output div for step button/visualization-->
+                <div class="visualizer">
+                    <div id="callTree"></div>
+                    <div id="stackPanel">
+                        <h4>Call Stack</h4>
+                        <div id="stackVisual"></div>
+                    </div>
+                </div>
             </section>
         </main>
         <script>
+
+            // --- Globals/Constants ---
             const runBtn = document.getElementById("runBtn");
+            const stepBtn = document.getElementById("stepBtn");
+            const stackVisual = document.getElementById("stackVisual");
             const outputDiv = document.getElementById("output");
+            const callTree = document.getElementById("callTree");
+            const stack = [];
+            let steps = [];
+            let currentStep = 0;
+
+            // --- Functions ---
+            // --- Execute Step ---
+            function executeStep() {
+                if (currentStep >= steps.length){
+                    stepBtn.disabled = true;
+                    return;
+                    }
+                const step = steps[currentStep];
+                if (step.action === "call"){
+                    handleCall(step);
+                    }
+                if (step.action === "return"){
+                    handleReturn(step);
+                    }
+                currentStep++;
+            }
+
+            // --- handle call actions ---      
+            function handleCall(step) {
+                const frame = document.createElement("div");
+                frame.classList.add("stack-frame");
+                if (step.n <= 1){
+                    frame.textContent = `factorial(${step.n}) = 1`;
+                }
+                else {
+                    frame.textContent = `factorial(${step.n}) = ${step.n} * factorial(${step.n-1})`;
+                }
+                stackVisual.appendChild(frame);
+
+                setTimeout(()=>{
+                    frame.classList.add("show");
+                }, 10);
+
+                stack.push({
+                    element: frame,
+                    n: step.n
+                });
+            }
+
+            // --- handle return actions ---
+            function handleReturn(step) {
+                //remove frame object from stack
+                const frameObj = stack.pop();
+                //if there is no object return, error handling
+                if (!frameObj) return;
+                //the actual stack frame is the HTML element we saved in the JSON object
+                const frame = frameObj.element;
+                const n = frameObj.n;
+
+                if (n<=1){
+                    frame.textContent = `factorial(${n}) = 1`;
+                } else {
+                    const childVal = step.returnVal / n;
+                    frame.textContent = 
+                    `factorial(${n}) = ${n} * ${childVal} = ${step.returnVal}`;
+                }
+                frame.classList.add("resolved");
+            }
+
+            // --- Listeners ---
+            // step button, uses functions to display stack frames
+            stepBtn.addEventListener("click", executeStep);
+            
+            //run button only gets the data and resets display and state 
             runBtn.addEventListener("click", async () => {
                 const n = parseInt(document.getElementById("number").value);
 
@@ -45,7 +129,7 @@
                     outputDiv.innerHTML = "<p>Please enter a number</p>";
                     return;
                 }
-                outputDiv.innerHTML = "<p>Running.....</p>";
+                outputDiv.innerHTML = "<p>Loading.....</p>";
                 try {
                     const response = await fetch("/api/factorial", {
                         method: "POST",
@@ -55,55 +139,19 @@
                         body: JSON.stringify({n:n})
                     });
                     const data = await response.json();
+
+                    // --- state reset ---
+                    steps = data.steps;
+                    currentStep = 0;
+                    stack.length = 0;
+                    // --- clear fields ---
                     outputDiv.innerHTML = "";
-                    const stack = [];
-                    for (const step of data.steps){
-                        const container = document.createElement("div");
-                        container.style.marginLeft = `${step.depth * 20}px`;
-                        const header = document.createElement("p");
-                        const details = document.createElement("div");
-                        const p = document.createElement("p");
-                        p.textContent = "";
-                        p.style.display = "none";
-                        if (step.action === "call"){
-                            header.textContent = `${step.action.toUpperCase()}: ${step.value}`;
-                            container.appendChild(header);  
-                            header.style.cursor = "pointer";
-                        
-                            details.style.display = "none";
-                            
-                            if (step.n <= 1){
-                                details.textContent = `factorial(${step.n}) = 1`;
+                    stackVisual.innerHTML = "";
+                    callTree.innerHTML = "";
 
-                            } else {
-                                details.textContent = `factorial(${step.n})= ${step.n} * Result of factorial(${step.n - 1})
-                                `;
-                                
-                            }
-                        header.addEventListener("click", () => {
-                            details.style.cursor = "pointer";
-                            details.style.display = 
-                                details.style.display === "none" ? "block" : "none";
-                            }
-                        )
-                        details.addEventListener("click", () => {
-                                    p.style.display = 
-                                        p.style.display === "none" ? "block" : "none"; 
-                                    }
-                            )
-                        details.appendChild(p)
-                        container.appendChild(details);
-                        stack.push({
-                            returnElem: p
-                        })
-                        }
-                        if (step.action === "return"){
-                            const frame = stack.pop();
-                            frame.returnElem.textContent = `Returns ${step.returnVal}`;
-
-                        }   
-                    outputDiv.appendChild(container);
-                    }
+                    // --- show the step button ---
+                    stepBtn.disabled = false;
+                   
                 } catch (error) {
                     outputDiv.innerHTML = "<p>Error calling API</p>";
                     console.error(error);
