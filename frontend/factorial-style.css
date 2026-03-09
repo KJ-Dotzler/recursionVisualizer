@@ -95,18 +95,24 @@ li {
 
 .stack-frame {
     background: #dbeafe;
-    border: 1px solid var(--accent-color);
+    border: 1px solid #3b82f6;
     border-radius: 6px;
-    padding: 0.5rem;
-    margin-top: 0.5rem;
-    transform: translateY(-10px);
+    padding: 6px;
+    margin-top: 6px;
+    /*transform: translateY(-10px);
     opacity: 0;
-    transition: all 0.3s ease;
+    transition: all 0.3s ease;*/
 }
 
 .stack-frame.show {
-    transform: translateY(0);
+    /*transform: translateY(0);*/
     opacity: 1;
+}
+
+.stack-frame.active {
+    background: #fde68a;
+    border-color: #f59e0b;
+    font-weight: bold;
 }
 
 .stack-frame.resolved {

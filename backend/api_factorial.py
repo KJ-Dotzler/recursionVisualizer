@@ -22,7 +22,7 @@ def factorialSteps(n : int, steps : List[execStep]) -> int:
         execStep(
             line=1, 
             event='call', 
-            description=f'Entering Factorial({n})',
+            description=f'Entering factorial({n})',
             n=n,
             )
         )
@@ -49,13 +49,14 @@ def factorialSteps(n : int, steps : List[execStep]) -> int:
     steps.append(
         execStep(
             line=4, 
-            event='evaluate recursive', 
-            description=f'Evaluating Factorial({n-1})',
+            event='evaluate_recursive', 
+            description=f'Evaluating factorial({n-1})',
             n=n,
             )
         )
     
-    childVal = n * factorialSteps(n-1, steps)
+    childVal = factorialSteps(n-1, steps)
+    result = n * childVal
     steps.append(
         execStep(
             line=4,
@@ -63,7 +64,7 @@ def factorialSteps(n : int, steps : List[execStep]) -> int:
             description=f'Substituting returned value {childVal} into {n} * {childVal}',
             n=n,
             returnVal=result))
-    result = n * childVal
+    
     steps.append(
         execStep(
             line=4, 

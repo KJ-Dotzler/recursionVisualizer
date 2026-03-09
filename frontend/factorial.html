@@ -33,6 +33,17 @@
             </section>
             <section class="section">
                 <h3>Execution steps</h3>
+                <!--output pre for renderCode func-->
+                <pre id="codePanel">
+                    1: def factorial(n):
+                    2:    if n <= 1:
+                    3:        return 1
+                    4:    return n * factorial(n - 1)
+                </pre>
+
+                <!--output for renderVariables func-->
+                <div id="varPanel"></div>
+
                 <!--output div for run button-->
                 <div id="output"></div>
 
@@ -54,13 +65,89 @@
             const stackVisual = document.getElementById("stackVisual");
             const outputDiv = document.getElementById("output");
             const callTree = document.getElementById("callTree");
+            const codePanel = document.getElementById("codePanel");
+            const varPanel = document.getElementById("varPanel");
             const stack = [];
+            let origCode = codePanel.innerText.trim();
             let steps = [];
             let currentStep = 0;
 
             // --- Functions ---
+
+            //--- update frame ---
+            function updateActiveFrame(){
+                const frames = stackVisual.children;
+                for (let frame of frames){
+                    frame.classList.remove("active");
+                }
+                if (frames.length > 0){
+                    frames[frames.length-1].classList.add("active");
+                }
+            }
+
+            //--- Render functions ---
+            function renderDescription(step){
+                outputDiv.innerHTML = step.description;
+            }
+
+            function renderStack(step){
+                if (step.event === "call"){
+                    const frame = document.createElement("div");
+                    frame.classList.add("stack-frame");
+                    frame.textContent = `factorial(${step.n})`;
+
+                    stackVisual.appendChild(frame);
+
+                    stack.push({
+                        elem : frame,
+                        n : step.n
+                    });
+
+                    updateActiveFrame();
+                }
+
+                if (step.event === "return"){
+                    const frameObj = stack.pop();
+                    
+                    if (!frameObj){
+                        return
+                    }
+
+                    frameObj.elem.textContent = 
+                    `factorial(${step.n}) = ${step.returnVal}`;
+
+                    frameObj.elem.classList.add("resolved");
+
+                    updateActiveFrame();
+                }
+            }
+
+            function renderCode(step){
+                const lines = origCode.split("\n");
+
+                const highlighted = lines.map(line => {
+                    if (line.trim().startsWith(step.line + ":")){
+                        return ">> " + line.trim();
+                    }
+
+                    return "    " + line.trim();
+                });
+
+                codePanel.innerText = highlighted.join("\n");
+            }
+
+            function renderVariables(step){
+                let text = `n = ${step.n}`;
+                if (step.returnVal !== null &&
+                    step.returnVal !== undefined){
+                        text += `<br>return = ${step.returnVal}`;
+                    }
+                varPanel.innerHTML = text;
+            }
+
             // --- Execute Step ---
             function executeStep() {
+                /*same thing, will keep old function code until restructure runs/works
                 if (currentStep >= steps.length){
                     stepBtn.disabled = true;
                     return;
@@ -72,10 +159,26 @@
                 if (step.action === "return"){
                     handleReturn(step);
                     }
+                currentStep++;*/
+                if (currentStep >= steps.length){
+                    stepBtn.disabled = true;
+                    return;
+                    }
+                const step = steps[currentStep];
+
+                renderDescription(step);
+                renderStack(step);
+                renderCode(step);
+                renderVariables(step);
+
                 currentStep++;
+
             }
 
+
             // --- handle call actions ---      
+            /* no longer handling calls, displaying backend function state instead, will keep here for now
+            after restructure delete
             function handleCall(step) {
                 const frame = document.createElement("div");
                 frame.classList.add("stack-frame");
@@ -116,7 +219,7 @@
                 }
                 frame.classList.add("resolved");
             }
-
+*/
             // --- Listeners ---
             // step button, uses functions to display stack frames
             stepBtn.addEventListener("click", executeStep);
