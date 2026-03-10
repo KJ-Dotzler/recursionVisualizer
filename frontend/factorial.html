@@ -33,14 +33,16 @@
             </section>
             <section class="section">
                 <h3>Execution steps</h3>
-                <!--output pre for renderCode func-->
+                <!--output pre for renderCode func
                 <pre id="codePanel">
                     1: def factorial(n):
                     2:    if n <= 1:
                     3:        return 1
                     4:    return n * factorial(n - 1)
                 </pre>
-
+            -->
+                <!--changing to single div for line by line code output?-->
+                <div id="codePanel" class="code-panel"></div>
                 <!--output for renderVariables func-->
                 <div id="varPanel"></div>
 
@@ -68,13 +70,29 @@
             const codePanel = document.getElementById("codePanel");
             const varPanel = document.getElementById("varPanel");
             const stack = [];
-            let origCode = codePanel.innerText.trim();
+            //let origCode = codePanel.innerText.trim();
+            const codeLines = [
+                "1: def factorial(n):",
+                "2:     if n <= 1:",
+                "3:         return 1",
+                "4:     return n * factorial(n - 1)"
+            ];
             let steps = [];
             let currentStep = 0;
 
             // --- Functions ---
 
-            //--- update frame ---
+            // --- create code panel ---
+            function initCodePanel(){
+                codePanel.innerHTML = "";
+
+                for (let line of lines){
+                    const div = document.createElement("div");
+                    div.classList.add("codePanel")
+                }
+            }
+
+            // --- update frame ---
             function updateActiveFrame(){
                 const frames = stackVisual.children;
                 for (let frame of frames){
@@ -85,7 +103,7 @@
                 }
             }
 
-            //--- Render functions ---
+            // --- Render functions ---
             function renderDescription(step){
                 outputDiv.innerHTML = step.description;
             }
