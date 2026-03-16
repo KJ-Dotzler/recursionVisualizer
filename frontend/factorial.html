@@ -9,7 +9,7 @@
     <body>
         <header class="navbar">
             <div class="nav-container">
-                <h1 class="logo"></h1>
+                <h1 class="logo">Recursion Visualizer</h1>
                 <nav>
                     <ul class="nav-links">
                         <li><a href="/">Home</a></li>
@@ -20,7 +20,7 @@
         <main class="container">
             <section class="hero">
                 <h2>Factorial Recursion</h2>
-                <p class="hero text">
+                <p class="hero-text">
                     Enter a number (0-10) to view the recursive call stack
                     that evaluates the factorial. 
                 </p>
@@ -33,14 +33,6 @@
             </section>
             <section class="section">
                 <h3>Execution steps</h3>
-                <!--output pre for renderCode func
-                <pre id="codePanel">
-                    1: def factorial(n):
-                    2:    if n <= 1:
-                    3:        return 1
-                    4:    return n * factorial(n - 1)
-                </pre>
-            -->
                 <!--changing to single div for line by line code output?-->
                 <div id="codePanel" class="code-panel"></div>
                 <!--output for renderVariables func-->
@@ -110,7 +102,7 @@
 
             // --- Render functions ---
             function renderDescription(step){
-                outputDiv.innerHTML = step.description;
+                outputDiv.innerHTML += step.description + "\n";
             }
 
             function renderStack(step){
@@ -146,17 +138,7 @@
             }
 
             function renderCode(step){
-                /*const lines = origCode.split("\n");
-
-                const highlighted = lines.map(line => {
-                    if (line.trim().startsWith(step.line + ":")){
-                        return ">> " + line.trim();
-                    }
-
-                    return "    " + line.trim();
-                });
-
-                codePanel.innerText = highlighted.join("\n");*/
+                
                 const lines = codePanel.children;
 
                 for (let line of lines){
@@ -183,19 +165,6 @@
 
             // --- Execute Step ---
             function executeStep() {
-                /*same thing, will keep old function code until restructure runs/works
-                if (currentStep >= steps.length){
-                    stepBtn.disabled = true;
-                    return;
-                    }
-                const step = steps[currentStep];
-                if (step.action === "call"){
-                    handleCall(step);
-                    }
-                if (step.action === "return"){
-                    handleReturn(step);
-                    }
-                currentStep++;*/
                 if (currentStep >= steps.length){
                     stepBtn.disabled = true;
                     return;
@@ -210,52 +179,6 @@
                 currentStep++;
 
             }
-
-
-            // --- handle call actions ---      
-            /* no longer handling calls, displaying backend function state instead, will keep here for now
-            after restructure delete
-            function handleCall(step) {
-                const frame = document.createElement("div");
-                frame.classList.add("stack-frame");
-                if (step.n <= 1){
-                    frame.textContent = `factorial(${step.n}) = 1`;
-                }
-                else {
-                    frame.textContent = `factorial(${step.n}) = ${step.n} * factorial(${step.n-1})`;
-                }
-                stackVisual.appendChild(frame);
-
-                setTimeout(()=>{
-                    frame.classList.add("show");
-                }, 10);
-
-                stack.push({
-                    element: frame,
-                    n: step.n
-                });
-            }
-
-            // --- handle return actions ---
-            function handleReturn(step) {
-                //remove frame object from stack
-                const frameObj = stack.pop();
-                //if there is no object return, error handling
-                if (!frameObj) return;
-                //the actual stack frame is the HTML element we saved in the JSON object
-                const frame = frameObj.element;
-                const n = frameObj.n;
-
-                if (n<=1){
-                    frame.textContent = `factorial(${n}) = 1`;
-                } else {
-                    const childVal = step.returnVal / n;
-                    frame.textContent = 
-                    `factorial(${n}) = ${n} * ${childVal} = ${step.returnVal}`;
-                }
-                frame.classList.add("resolved");
-            }
-*/
             // --- Listeners ---
             // step button, uses functions to display stack frames
             stepBtn.addEventListener("click", executeStep);
@@ -301,5 +224,4 @@
             });
         </script>
     </body>
-    <footer></footer>
 </html>

@@ -5,6 +5,13 @@
     --accent-color: #2563eb;
     --card-bg: #ffffff;
     --border-color: #e5e7eb;
+    --highlight-bg: #eff6ff;
+    --frame-pending-bg: #dbeafe;
+    --frame-pending-border:#3b82f6 ;
+    --frame-active-bg: #fde68a;
+    --frame-active-border: #f59e0b;
+    --frame-resolved-bg: #dcfce7;
+    --frame-resolved-border: #16a34a;
 }
 * {
    box-sizing: border-box; 
@@ -77,23 +84,68 @@ li {
 .section h3 {
     margin-bottom: 0.75rem;
 }
+
+/*--- N input ---*/
+.input-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 1rem 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+/*--- Buttons ---*/
+button {
+    padding: 0.4rem 1rem;
+    border-radius: 6px;
+    border: 1px solid var(--border-color);
+    cursor: pointer;
+    font-size: 0.95rem;
+    background: var(--card-bg);
+    color: var(--text-color);
+    transition: background 0.15s;
+}
+#runBtn {
+    background: var(--accent-color);
+    color: white;
+    border-color: var(--accent-color);
+}
+#runBtn:hover {
+    background: #1d4ed8;
+}
+button:hover {
+    background: var(--bg-color);
+}
+button:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
 /*--- Stack frame visualizer ---*/
 .visualizer {
-    display: flex;
-    gap: 2rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto;
+    gap: 1rem;
 }
 #callTree {
-    flex: 2;
+    grid-column: 1/2;
 }
 #stackPanel {
-    flex: 1;
+    grid-column: 2/3;
     background: var(--card-bg);
     border: 1px solid var(--border-color);
     border-radius: 8px;
     padding: 1rem;
 }
 #varPanel {
-    flex: 3;
+    grid-column: 1/-1;
+    background: var(--card-bg);
+    border: solid 1px var(--border-color);
+    border-radius: 8px;
+    padding: 1rem;
 }
 #output {
     display: inline-flex;
@@ -104,13 +156,10 @@ li {
     border-radius: 6px;
     padding: 6px;
     margin-top: 6px;
-    /*transform: translateY(-10px);
-    opacity: 0;
-    transition: all 0.3s ease;*/
+
 }
 
 .stack-frame.show {
-    /*transform: translateY(0);*/
     opacity: 1;
 }
 
@@ -132,6 +181,7 @@ li {
     font-family: monospace;
     border-radius: 8px;
     padding: 8px;
+    margin-bottom: 1rem;
 }
 
 .code-line {
