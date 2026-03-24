@@ -130,25 +130,14 @@ button:disabled {
     grid-template-rows: auto auto;
     gap: 1rem;
 }
-#callTree {
-    grid-column: 1/2;
-}
-#stackPanel {
-    grid-column: 2/3;
-    background: var(--card-bg);
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    padding: 1rem;
-}
-#varPanel {
-    grid-column: 1/-1;
-    background: var(--card-bg);
-    border: solid 1px var(--border-color);
-    border-radius: 8px;
-    padding: 1rem;
-}
+
 #output {
-    display: inline-flex;
+    display: block;
+    height: 3rem;
+    font-size: 0.95rem;
+    overflow-y: auto;
+    color: var(--muted-text);
+    padding: 0.25rem 0;
 }
 .stack-frame {
     background: #dbeafe;
@@ -175,14 +164,6 @@ button:disabled {
     font-weight: bold;
 }
 
-.code-panel {
-    background: #111827;
-    color: #e5e7eb;
-    font-family: monospace;
-    border-radius: 8px;
-    padding: 8px;
-    margin-bottom: 1rem;
-}
 
 .code-line {
     padding: 2px 6px;
@@ -200,4 +181,56 @@ button:disabled {
     text-align: center;
     color: var(--muted-text);
     font-size: 0.9rem;
+}
+.step-card {
+    background: var(--highlight-bg);
+    border: 1px solid var(--accent-color);
+    border-radius: 8px;
+    padding: 0.75rem 1.25rem;
+    margin-bottom: 1rem;
+    min-height: 3.5rem;
+}
+
+.step-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--accent-color);
+    display: block;
+    margin-bottom: 0.25rem;
+}
+
+.step-card p {
+    margin: 0;
+    color: var(--text-color);
+    font-size: 0.95rem;
+}
+
+.code-panel {
+    margin-bottom: 1rem;
+    background: #111827;
+    color: #e5e7eb;
+    font-family: monospace;
+    border-radius: 8px;
+    padding: 8px;
+}
+
+
+
+.panel {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 1rem;
+    min-height: 8rem;
+}
+
+.panel-label {
+    margin: 0 0 0.75rem 0;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--muted-text);
 }
